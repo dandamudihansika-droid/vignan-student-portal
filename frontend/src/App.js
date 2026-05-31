@@ -9,7 +9,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
 import Login from './pages/Login';
-import Register from './pages/Register';
 import Onboarding from './pages/Onboarding';
 import Dashboard from './pages/Dashboard';
 import StudyTimer from './pages/StudyTimer';
@@ -21,52 +20,23 @@ import Profile from './pages/Profile';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col bg-gray-50">
+      <div className="min-h-screen flex flex-col bg-[#080B11]">
         <Navbar />
         <main className="flex-1">
           <Routes>
-            {/* Public Routes */}
+            {/* Public Auth Route */}
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+
+            {/* Private Student Routes */}
+            <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/study-timer" element={<ProtectedRoute><StudyTimer /></ProtectedRoute>} />
+            <Route path="/attendance" element={<ProtectedRoute><AttendanceTracker /></ProtectedRoute>} />
+            <Route path="/academics" element={<ProtectedRoute><Academics /></ProtectedRoute>} />
+            <Route path="/sleep" element={<ProtectedRoute><SleepAnalysis /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             
-            {/* Protected Routes */}
-            <Route path="/onboarding" element={
-              <ProtectedRoute>
-                <Onboarding />
-              </ProtectedRoute>
-            } />
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="/study-timer" element={
-              <ProtectedRoute>
-                <StudyTimer />
-              </ProtectedRoute>
-            } />
-            <Route path="/attendance" element={
-              <ProtectedRoute>
-                <AttendanceTracker />
-              </ProtectedRoute>
-            } />
-            <Route path="/academics" element={
-              <ProtectedRoute>
-                <Academics />
-              </ProtectedRoute>
-            } />
-            <Route path="/sleep" element={
-              <ProtectedRoute>
-                <SleepAnalysis />
-              </ProtectedRoute>
-            } />
-            <Route path="/profile" element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            } />
-            
-            {/* Default redirect */}
+            {/* Default redirects */}
             <Route path="/" element={<Navigate to="/dashboard" />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
@@ -77,21 +47,24 @@ function App() {
           toastOptions={{
             duration: 4000,
             style: {
-              background: '#363636',
-              color: '#fff',
+              background: '#0F1424',
+              color: '#f8fafc',
+              border: '1px solid #1e293b',
+              borderRadius: '12px',
+              fontFamily: 'sans-serif'
             },
             success: {
               duration: 3000,
               iconTheme: {
                 primary: '#10b981',
-                secondary: '#fff',
+                secondary: '#0F1424',
               },
             },
             error: {
               duration: 5000,
               iconTheme: {
-                primary: '#ef4444',
-                secondary: '#fff',
+                primary: '#f43f5e',
+                secondary: '#0F1424',
               },
             },
           }}

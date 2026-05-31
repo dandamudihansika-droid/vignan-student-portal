@@ -9,7 +9,8 @@ const router = express.Router();
 
 // Generate JWT Token
 const generateToken = (studentId) => {
-  return jwt.sign({ studentId }, process.env.JWT_SECRET, { expiresIn: '7d' });
+  const JWT_SECRET = process.env.JWT_SECRET || 'vignan-student-portal-secret-key-2024';
+  return jwt.sign({ studentId }, JWT_SECRET, { expiresIn: '7d' });
 };
 
 // @route   POST /api/auth/register
@@ -95,7 +96,7 @@ router.post('/register', [
 // @desc    Login student
 // @access  Public
 router.post('/login', [
-  body('studentId').notEmpty().withMessage('Student ID is required'),
+  body('email').isEmail().withMessage('Valid college email is required'),
   body('password').notEmpty().withMessage('Password is required')
 ], async (req, res) => {
   try {
@@ -104,10 +105,10 @@ router.post('/login', [
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { studentId, password } = req.body;
+    const { email, password } = req.body;
 
     // Check if student exists
-    const student = await Student.findOne({ studentId });
+    const student = await Student.findOne({ email });
     if (!student) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
@@ -124,7 +125,7 @@ router.post('/login', [
     }
 
     // Generate token
-    const token = generateToken(studentId);
+    const token = generateToken(student.studentId);
 
     res.json({
       token,

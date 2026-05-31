@@ -36,3 +36,7 @@ lerna-debug.log*
 
 # OS generated files
 Thumbs.db
+
+# Large backup archives
+fsd final.zip
+*.zip

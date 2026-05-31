@@ -20,12 +20,16 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Database Connection
-mongoose.connect(process.env.MONGODB_URI, {
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/student-portal';
+mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 .then(() => console.log('MongoDB connected successfully'))
-.catch((err) => console.error('MongoDB connection error:', err));
+.catch((err) => {
+  console.error('MongoDB connection error:', err.message);
+  console.log('Server will continue without database connection for testing');
+});
 
 // Routes
 app.use('/api/auth', authRoutes);
